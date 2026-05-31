@@ -1,17 +1,18 @@
 import sqlite3
 
-def create_database():
-    conn = sqlite3.connect('notes_manager.db')
+def create_database(db_name):
+    conn = sqlite3.connect(db_name)
     cur  = conn.cursor()
     cur.execute('''
-                CREATE TABLE IF NOT EXISTS notes (
+                CREATE TABLE IF NOT EXISTS notes 
+                (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     title TEXT,
                     content TEXT NOT NULL,
                     creation_date TEXT,
                     tags TEXT
                 )
-            ''')
+                ''')
 
     conn.commit()
     try :
@@ -24,6 +25,7 @@ def create_database():
 
 
 if __name__ == '__main__':
-    create_database()
+    database_name = 'notes_manager.db'
+    create_database(database_name)
 
 
