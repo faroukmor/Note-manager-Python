@@ -4,7 +4,6 @@ from PyQt5.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout,
                              QGroupBox, QLineEdit,QMessageBox) 
 from PyQt5.QtGui import QIcon
 from database_operations import notes_database
-
 import sys, os, shutil
 
 
@@ -13,22 +12,19 @@ def resource_path(relative_path):
         return os.path.join(sys._MEIPASS, relative_path)
     return os.path.abspath(relative_path)
 
-# ---------- إعداد قاعدة البيانات ----------
+
 DB_NAME = "notes_manager.db"
 db_src = resource_path(DB_NAME)
 
+# لحفظ قاعدة البيانات عند البناء لتطبيق
 if getattr(sys, 'frozen', False):
-    # المجلد الذي ستعمل فيه القاعدة بعد التحويل
     appdata_dir = os.path.join(os.environ['APPDATA'], "Note_manager")
     os.makedirs(appdata_dir, exist_ok=True)
     db_dst = os.path.join(appdata_dir, DB_NAME)
-    # نسخ القاعدة أول مرة فقط
     if not os.path.exists(db_dst):
         shutil.copyfile(db_src, db_dst)
 else:
-    db_dst = db_src  # أثناء التطوير على البايثون
-
-
+    db_dst = db_src  
 
 
 class smart_note(QMainWindow):
@@ -38,8 +34,8 @@ class smart_note(QMainWindow):
         self.setWindowTitle("SMART NOTES MANAGER")
         self.setGeometry(1430,35,500,990)
         
-        # في بداية __init__ بعد setGeometry
-        icon_path = resource_path("myicon.jfif")  # أيقونتك الجديدة
+        
+        icon_path = resource_path("myicon.jfif")  
         self.setWindowIcon(QIcon(icon_path))
 
         
@@ -96,21 +92,20 @@ class smart_note(QMainWindow):
         note_input_layout.addWidget(self.content_editor)
         note_details_group_box.setLayout(note_input_layout)
 
-        # Layout for Add, Update, Delete buttons (first row)
         top_buttons_hbox = QHBoxLayout()
         top_buttons_hbox.addStretch(1) # Push buttons to center
         top_buttons_hbox.addWidget(self.add_button)
         top_buttons_hbox.addWidget(self.update_button)
         top_buttons_hbox.addWidget(self.delete_button)
-        top_buttons_hbox.addStretch(1) # Push buttons to center
+        top_buttons_hbox.addStretch(1) 
 
-        # Layout for Show All Notes button (second row)
-        show_all_button_hbox = QHBoxLayout()
-        show_all_button_hbox.addStretch(1) # Push button to center
-        show_all_button_hbox.addWidget(self.showAll_button)
-        show_all_button_hbox.addStretch(1) # Push button to center
         
-        # New: A QVBoxLayout to stack the two HBoxes of buttons
+        show_all_button_hbox = QHBoxLayout()
+        show_all_button_hbox.addStretch(1) 
+        show_all_button_hbox.addWidget(self.showAll_button)
+        show_all_button_hbox.addStretch(1) 
+        
+        
         buttons_vbox = QVBoxLayout()
         buttons_vbox.addLayout(top_buttons_hbox)
         buttons_vbox.addLayout(show_all_button_hbox)
@@ -358,8 +353,8 @@ class smart_note(QMainWindow):
         self.note_db.close_connection()
 
     def closeEvent(self, event):
-        self.note_db.save_changes()      # لو عندك دالة commit
-        self.note_db.close_connection()  # لو عندك دالة إغلاق الاتصال
+        self.note_db.save_changes()      
+        self.note_db.close_connection() 
         event.accept()
    
 
